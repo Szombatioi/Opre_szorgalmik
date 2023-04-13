@@ -1,0 +1,64 @@
+class Scheduler: #többszintű ütemező osztály
+    def __init__(self) -> None:
+        self.RR_Scheduler = RR_Scheduler(1, 2)
+        self.SRTF_Scheduler = SRTF_Scheduler(0)
+        self.activeTask = None
+        self.taskHistory : Task = [] #TODO: ez valid deklaráció Task type-ra?
+    def addTask(self, task: Task) -> None: #taszk felvétele a megfelelő szintre
+        if task.prior == 0:
+            self.RR_Scheduler.addTask(task)
+        else:
+            self.SRTF_Scheduler.addTask(task)   
+    def getInput(self) -> None:
+        while True:
+            inp = input().strip()
+            if not inp:
+                break
+            inp = inp.split(',')
+
+            t = Task(inp[0], int(inp[1]), int(inp[2]), int(inp[3]))
+            self.addTask(t)
+            self.taskHistory.append(t)
+
+    def start(self) -> None: #a beadott taszkok után az elindítással kezdődik meg a szimuláció
+        
+        while not SRTF_Scheduler.List.empty and not RR_Scheduler.FIFO.empty: #amíg van taszk valamelyik szinten
+            #choose task
+            ##self.activeTask = self.chooseTask()
+            if self.activeTask is None: #ha nincs aktív taszkunk
+                #choose new task
+                    #from 1 or 0
+                pass
+            if self.activeTask.prior != 1 and not self.SRTF_Scheduler.List.empty: #ha van magas prioritású taszk a Listában
+                self.RR_Scheduler.FIFO.push(self.activeTask) #visszakerül a FIFO végére
+                self.activeTask = self.SRTF_Scheduler.List.pop()
+            else:
+                #if nem járt le az időszelet a mostaniról
+                if self.activeTask.tickTime < 2:
+                    self.activeTask = self.RR_Scheduler.FIFO.pop()
+            self.activeTask.tick()
+            #print a betűjelet
+
+            pass
+        for task in self.taskHistory:
+            print(f"{task.name}:{task.wait},", end="")
+        print()
+        pass
+    def chooseTask(self) -> Task: #kiválasztja a soron következő taszkot és azt kiveszi a tárolójából
+        pass
+
+    def tick(self) -> None: #egy CPU tick -> az aktuális taszk hátralévő ideje csökken
+        #get best task
+        #tick task
+        task = self.chooseTask()
+        if task is None:
+            return
+        
+        #TODO: kell magic
+        task.tick()
+
+        #amely taszkok nem futnak, azok várakozási ideje nő
+        for t in self.RR_Scheduler.FIFO.Storage:
+            t.wait()
+        for t in self.SRTF_Scheduler.List.Storage:
+            t.wait()
