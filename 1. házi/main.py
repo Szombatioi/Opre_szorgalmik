@@ -8,8 +8,6 @@ class Task: #taszk osztály
         self.remTime = length       #taszk futásának hátralévő ideje (indítási idő kezdetben)
         self.waitTime = 0           #taszk várakozásának ideje
         self.tickTime = 0           #taszk futásának eltelt ideje
-    def __init__(self, arr):
-         self.__init__(self, arr[0], int(arr[1]),int(arr[2]),int(arr[3]))
     def wait(self) -> None: #taszk várakozása
         self.waitTime+=1
     def tick(self) -> None: #taszk egyszeri kezelése
@@ -103,18 +101,20 @@ class Scheduler: #többszintű ütemező osztály
         else:
             self.SRTF_Scheduler.addTask(task) 
     def getInput(self) -> None: #az adatok befogadása
-        """while True:
-           try:
-               inp = input()
-               #if not inp:
-               if inp == '':
-                   break
-               inp = inp.split(',')
+        lines = []
+        while True:
+            try:
+                lines.append(input())
+            except:
+                break
+        for line in lines:
+            try:
+               inp = line.split(',')
                t = Task(inp[0], int(inp[1]), int(inp[2]), int(inp[3]))
                self.temp.append(t)
-           except EOFError:
-               pass"""
-        self.temp = [Task(c.split(',')) for c in open(0) if c.strip()]
+            except:
+                pass
+        
     def work(self): #a szimuláció
         time = 0
         while (len(self.temp) != 0) or ((not self.RR_Scheduler.FIFO.empty) or (not self.SRTF_Scheduler.List.empty)) or (self.activeTask is not None): #itt egy iteráció = egy taszk kiválasztása
@@ -140,23 +140,15 @@ class Scheduler: #többszintű ütemező osztály
                     if not self.RR_Scheduler.FIFO.empty:
                         self.addTask(self.activeTask)
                         self.activeTask = self.RR_Scheduler.popTask()
-##                        if self.activeTask not in self.finishedTasks:
-##                            self.finishedTasks.append(self.activeTask)
                     elif (not self.SRTF_Scheduler.List.empty) and (self.SRTF_Scheduler.List.top().remTime < self.activeTask.remTime):
                         self.addTask(self.activeTask)
                         self.activeTask = self.SRTF_Scheduler.popTask()
-##                        if self.activeTask not in self.finishedTasks:
-##                            self.finishedTasks.append(self.activeTask)
             else:
                 if not self.RR_Scheduler.FIFO.empty:
                     self.activeTask = self.RR_Scheduler.popTask()
                     self.activeTask.tickTime = self.RR_Scheduler.time
-##                    if self.activeTask not in self.finishedTasks:
-##                            self.finishedTasks.append(self.activeTask)
                 elif not self.SRTF_Scheduler.List.empty:
                     self.activeTask = self.SRTF_Scheduler.popTask()
-##                    if self.activeTask not in self.finishedTasks:
-##                            self.finishedTasks.append(self.activeTask)
 
             # taszk tickelése
             if self.activeTask is not None:
@@ -181,15 +173,8 @@ class Scheduler: #többszintű ütemező osztály
                 
             time += 1
             
-        #outputok kiírása
         print(self.text)
         print(",".join(f"{t.name}:{t.waitTime}" for t in self.finishedTasks))
-        #self.finishedTasks.sort(key=sortKey)
-##        for t in self.finishedTasks:
-##            print(f"{t.name}:{t.waitTime}", end="")
-##            if t != self.finishedTasks[len(self.finishedTasks)-1]:
-##                print(",", end="")
-##        print()
 
 
 if __name__ == "__main__":
