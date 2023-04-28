@@ -27,16 +27,12 @@ class Fifo:
     def Contains(self, value: int) -> bool:
         for x in self.storage:
             if x.value == value:
-                # temp = self.storage.pop(index(self.storage, x))
-                # temp.frozen = True
-                # temp.freeze = 3
-                # self.Push(temp)
+                temp = self.storage.pop(index(self.storage, x))
+                temp.frozen = True
+                temp.freeze = 3
+                self.Push(temp)
+                self.Decrease()
                 return True
-                # if index(self.storage, x) == 0:
-                #     temp = self.storage.pop(index(self.storage, x))
-                #     temp.frozen = True
-                #     temp.freeze = 3
-                #     self.Push(temp)
         return False
     def HasFree(self) -> bool: #avagy a fifoban van szabad keret (valahol)
         for x in self.storage:
@@ -62,6 +58,12 @@ class Fifo:
     
     def Get(self, n: int): #TEST
         return self.storage[n]
+    def GetFree(self) -> Page:
+        for p in self.storage:
+            if p.freeze == 0:
+                return p
+            self.Decrease()
+        return None
 
 
 if __name__ == "__main__":
@@ -81,14 +83,14 @@ if __name__ == "__main__":
             print(f"{ref} -> FIFO: | {fifo.Get(2)} | {fifo.Get(1)} | {fifo.Get(0)}\t", end="")
         if fifo.Contains(ref):
             print("-", end="" if not test else "\n")
-            fifo.Decrease()
-            temp = fifo.Pop()
-            fifo.Push(temp)
+            
             
         else:
             if not fifo.HasFree(): #ha egyáltalán nincs szabad keret a fifoban
                 print("*", end="" if not test else "\n")
                 pFaults += 1
+                temp = fifo.Pop()
+                fifo.Push(temp)
                 fifo.Decrease()
             else:
                 page = fifo.Pop()
@@ -96,12 +98,10 @@ if __name__ == "__main__":
                     fifo.Push(page)
                     page = fifo.Pop()
                     fifo.Decrease()
-                # if page.freeze > 0:
-                #     page = fifo.GetNotFrozen()
                 page.freeze = 3 #visszaállítjuk
                 page.frozen = True
                 page.value = ref
-                fifo.Decrease() #minden csökkentünk a fifo-ban, de ezt még nem!
+                fifo.Decrease() #mindent csökkentünk a fifo-ban, de ezt még nem!
                 fifo.Push(page)
                 pFaults += 1
                 print(page.name, end="" if not test else "\n")
