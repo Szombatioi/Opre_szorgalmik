@@ -9,7 +9,6 @@ class Page:
         self.name = name
         self.value: int = None
         self.freeze = 0
-<<<<<<< HEAD
         self.frozen = False
         self.referenced = False
         
@@ -19,11 +18,6 @@ class Page:
         if self.referenced:
             string += "'"
         return string
-=======
-        self.referenced = False
-    def __str__(self):
-        return self.name
->>>>>>> master
 
 class Fifo:
     def __init__(self) :
@@ -35,7 +29,6 @@ class Fifo:
     def Pop(self) -> Page:
         return self.storage.pop(0)
     def Contains(self, value: int) -> bool:
-<<<<<<< HEAD
         for x in self.storage:
             if x.value == value:
                 if test:
@@ -45,11 +38,6 @@ class Fifo:
                 # temp.freeze = 3
                 # self.Push(temp)
                 x.referenced = True
-=======
-        for i in range(len(self.storage)):
-            if self.storage[i] == value:
-                self.storage[i].referenced = True
->>>>>>> master
                 return True
         return False
     def HasFree(self) -> bool: #avagy a fifoban van szabad keret (valahol)
@@ -66,7 +54,6 @@ class Fifo:
         for x in self.storage:
             if x.freeze > 0:
                 x.freeze -= 1
-<<<<<<< HEAD
             if x.freeze == 0:
                 x.frozen = False
     def PushBack(self, p: Page) :
@@ -107,29 +94,6 @@ class Fifo:
             else:
                 return self.storage.pop(i)
             #i+=1
-        
-=======
-    def PushBack(self, p: Page) -> None:
-        # temp = self.storage.pop(index(self.storage, p))
-        # self.Push(temp)
-        self.storage.insert(0,page)
-    def GetFree(self) -> Page:
-        i=0
-        while i < len(self.storage)-1:
-            page = self.storage[i]
-            if page.freeze == 0 and not page.referenced:
-                if page.referenced:
-                    self.storage[i].referenced = False
-                    #self.Push(self.storage.pop(i))
-                else:
-                    page = self.storage.pop(i)
-                    self.Decrease()
-                    return page    
-            i+=1
-    def top(self) -> Page:
-        return self.storage[0]
-                
->>>>>>> master
 
 
 if __name__ == "__main__":
@@ -150,19 +114,15 @@ if __name__ == "__main__":
         if fifo.Contains(ref):
             print("-", end="" if not test else "\n")
             fifo.Decrease()
-<<<<<<< HEAD
             # temp = fifo.Pop()
             # fifo.Push(temp)
             
-=======
->>>>>>> master
         else:
             if not fifo.HasFree() and not fifo.HasReference(): #ha egyáltalán nincs szabad keret a fifoban
                 print("*", end="" if not test else "\n")
                 pFaults += 1
                 fifo.Decrease()
             else:
-<<<<<<< HEAD
                 # page = fifo.Pop()
                 # while page.freeze > 0: #azaz a kivett lap még fagyasztott #TODO: lehet ez nem jó.  Lehet úgy kell, hogy a fifo elején lévő (fagyasztott) keret maradjon ott, de csökkenjen, a szabadot meg kivesszük
                 #     fifo.Push(page)
@@ -172,9 +132,7 @@ if __name__ == "__main__":
                 #     page = fifo.GetNotFrozen()
                 
                 page = fifo.GetFree()
-=======
-                page = fifo.Pop()
->>>>>>> master
+
                 page.freeze = 3 #visszaállítjuk
                 page.value = ref
                 fifo.Decrease() #mindent csökkentünk a fifo-ban, de ezt még nem!
