@@ -1,12 +1,16 @@
-class xyz:
-    pass
+class XYZ:
+    def __init__(self):
+        self.bool = True
 
-arr = []
-a = xyz()
-b = xyz()
-c = xyz()
-arr.append(a)
-arr.append(b)
-arr.append(c)
+a = XYZ()
+b = XYZ()
+c = XYZ()
 
+<<<<<<< HEAD
 arr.pop(62)
+=======
+arr = [a,b,c]
+x = arr.pop(1)
+x.bool = False
+arr.
+>>>>>>> master
