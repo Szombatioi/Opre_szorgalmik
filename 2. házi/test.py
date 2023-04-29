@@ -9,4 +9,4 @@ arr.append(a)
 arr.append(b)
 arr.append(c)
 
-arr.pop(b)
+arr.pop(62)
