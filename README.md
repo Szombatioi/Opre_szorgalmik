@@ -1,3 +1,5 @@
-BME VIK mérnökinformatika, IV. félév Operációs Rendszerek szorgalmik
-1. Házi:
-    Többszint? ütemez? tervezése
+BME VIK mÃ©rnÃ¶kinformatika, IV. fÃ©lÃ©v OperÃ¡ciÃ³s Rendszerek szorgalmik
+1. HÃ¡zi:
+    TÃ¶bbszintÅ± Ã¼temezÅ± tervezÃ©se
+2. HÃ¡zi:
+    LapkÃ©rÃ©sek Ã¼temezÃ©se
